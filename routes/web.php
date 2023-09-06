@@ -12,6 +12,7 @@ use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\WorkController;
 use App\Http\Controllers\TesController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,7 +29,13 @@ Route::get('/login', [AuthController::class, 'index']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
-Route::get('/', [DashboardController::class, 'index']);
+Route::get('/dashboard', [DashboardController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->middleware('guest');
+Route::get('/about', [HomeController::class, 'about']);
+Route::get('/product', [HomeController::class, 'product']);
+Route::get('/project', [HomeController::class, 'project']);
+Route::get('/contact', [HomeController::class, 'contact']);
+Route::get('/service', [HomeController::class, 'service']);
 
 Route::get('/user-group', [UserGroupController::class, 'index'])->name('user-group');
 Route::post('/user-group', [UserGroupController::class, 'store']);

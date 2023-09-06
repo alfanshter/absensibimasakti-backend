@@ -73,7 +73,7 @@ class AuthController extends Controller
             $updatetoken = DB::table('users')->where('username', $request->username)->update(['token_id' => $token]);
 
             $request->session()->regenerate();
-            return redirect()->intended('/');
+            return redirect()->intended('/dashboard');
         }
 
         return back()->with('loginError', 'Login Gagal');
