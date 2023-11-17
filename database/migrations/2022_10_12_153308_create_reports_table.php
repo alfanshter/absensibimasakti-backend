@@ -25,6 +25,7 @@ class CreateReportsTable extends Migration
             $table->string('picture_in');
             $table->dateTime('check_out')->nullable();
             $table->string('picture_out')->nullable();
+            $table->integer('overtime')->nullable();
             $table->timestamps();
         });
     }

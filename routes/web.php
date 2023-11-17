@@ -13,6 +13,7 @@ use App\Http\Controllers\WorkController;
 use App\Http\Controllers\TesController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\NotifikasiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -119,3 +120,10 @@ Route::post('/update/attendence', [AttendenceController::class, 'update']);
 Route::delete('/delete/attendence/{id}', [AttendenceController::class, 'destroy']);
 Route::post('/print_attendence', [AttendenceController::class, 'print_attendence']);
 Route::post('/export_excel', [AttendenceController::class, 'export']);
+
+
+Route::get('/notifikasi', [NotifikasiController::class, 'index_admin']);
+Route::post('/notifikasi', [NotifikasiController::class, 'store']);
+Route::delete('/notifikasi/{id?}', [NotifikasiController::class, 'delete']);
+Route::post('/editnotifikasi', [NotifikasiController::class, 'edit']);
+

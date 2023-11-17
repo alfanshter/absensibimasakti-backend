@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AttendenceController;
+use App\Http\Controllers\NotifikasiController;
 use App\Http\Controllers\UserGroupController;
 
 /*
@@ -28,3 +29,7 @@ Route::post('/create_group', [UserGroupController::class, 'create_group']);
 Route::get('/attendence', [AttendenceController::class, 'attendenceApi']);
 Route::post('/checkin', [AttendenceController::class, 'checkin']);
 Route::post('/checkout', [AttendenceController::class, 'checkout']);
+
+
+Route::get('/notifikasi', [NotifikasiController::class, 'index']);
+Route::post('/notifikasi', [NotifikasiController::class, 'store']);

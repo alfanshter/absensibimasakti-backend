@@ -51,6 +51,15 @@
         </ul>
       </div>
     </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="/notifikasi">
+        <span class="menu-title">Notification</span>
+        <i class="mdi mdi-home menu-icon"></i>
+      </a>
+    </li>
     @endif
+
+    
   </ul>
 </nav>

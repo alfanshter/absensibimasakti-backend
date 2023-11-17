@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Document</title>
 </head>
 
@@ -85,12 +85,12 @@
         <thead>
             <tr>
                 <th class="th-header" colspan="7">
-              
                     <img src="{{public_path('storage/foto/header.png')}}" alt="Image" style="width: 100%;">
+
                 </th>
             </tr>
         </thead>
-   
+
         <tbody>
             <tr class="tr-header">
                 <td class="tg-q9j0" colspan="7"><span style="font-weight:bold">LAPORAN ABSENSI</span><br>
@@ -113,6 +113,7 @@
                 <th class="tg-pht7">Picture In</th>
                 <th class="tg-pht7">Check Out</th>
                 <th class="tg-pht7">Picture Out</th>
+                <th class="tg-pht7">Overtime</th>
             </tr>
             @foreach($attendence as $data)
             <tr>
@@ -120,9 +121,25 @@
                 <td class="tg-pht7">{{$data->nama_grup}}</td>
                 <td class="tg-pht7">{{$data->date}}</td>
                 <td class="tg-pht7">{{$data->check_in}}</td>
-                <td class="tg-pht7"><img style="width: 100px; height:100px" src="{{public_path('storage/'.$data->picture_in)}}" alt="" srcset=""></td>
+                <td class="tg-pht7">
+                    @if($data->picture_in !=null)
+                    <img style="width: 100px; height:100px" src="{{public_path('storage/'.$data->picture_in)}}" alt="" srcset="">
+                    @endif
+                </td>
                 <td class="tg-pht7">{{$data->check_out}}</td>
-                <td class="tg-pht7"><img style="width: 100px; height:100px" src="{{public_path('storage/'.$data->picture_out)}}" alt="" srcset=""></td>
+                <td class="tg-pht7">
+                    @if($data->picture_in !=null)
+
+                    <img style="width: 100px; height:100px" src="{{public_path('storage/'.$data->picture_out)}}" alt="" srcset="">
+                    @endif
+                </td>
+                @if($data->overtime)
+                <td class="tg-pht7">{{$data->overtime}} Hours</td>
+                @else
+                <td class="tg-pht7">
+                    <center>-</center>
+                </td>
+                @endif
             </tr>
             @endforeach
         </tbody>

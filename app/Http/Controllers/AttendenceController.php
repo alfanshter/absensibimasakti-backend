@@ -26,7 +26,7 @@ class AttendenceController extends Controller
             $report = DB::table('reports')
             ->join('users', 'users.id', '=', 'reports.id_user')
             ->join('groupusers', 'groupusers.id', '=', 'users.grup_id')
-            ->orderBy('created_at','desc')
+            ->orderBy('date','desc')
             ->select('reports.*', 'users.name', 'groupusers.nama_grup')->paginate(10);
 
             $grup_id = null;
@@ -134,8 +134,8 @@ class AttendenceController extends Controller
         date_default_timezone_set('Asia/Jakarta');
         $hari = date('Y-m-d', time());
 
-        $data['date'] = date(now());
-        $data['check_in'] = date(now());
+        $data['date'] = date('Y-m-d', time());
+        $data['check_in'] = date('Y-m-d H:i:s', time());
         $user = Report::create($data);
 
         $response = [
@@ -160,7 +160,7 @@ class AttendenceController extends Controller
         }
 
         //cek absen apakah ada 
-        $cekabsen = Report::where('id_user', $request->id_user)->where('date', date('Y-m-d', time()))
+        $cekabsen = Report::where('id_user', $request->id_user)->where('date', date('Y-m-d',time()))
             ->first();
         if ($cekabsen != null) {
             if ($cekabsen->check_out != null) {
@@ -176,6 +176,9 @@ class AttendenceController extends Controller
 
                 $data = $request->all();
 
+                if ($request->overtime) {
+                    $data['overtime'] = (int)$request->overtime;
+                }
                 if ($request->file('picture_out')) {
                     //compress foto 
                     $foto = $request->file('picture_out');
@@ -201,7 +204,8 @@ class AttendenceController extends Controller
                 date_default_timezone_set('Asia/Jakarta');
                 $hari = date('Y-m-d', time());
 
-                $data['check_out'] = date(now());
+                // $data['check_out'] = date(now());
+                $data['check_out'] = date('Y-m-d H:i:s', time());
                 $user = Report::where('id', $cekabsen->id)->update($data);
 
                 $response = [
@@ -247,6 +251,7 @@ class AttendenceController extends Controller
                 ->select('reports.*', 'users.name', 'groupusers.nama_grup')
                 ->where('users.grup_id', '=', $request->grup_id)
                 ->whereBetween('date', [$request->starts_at,$request->ends_at])
+                ->orderBy('date','desc')
                 ->get();
 
             $pdf = Pdf::loadview('attendence.print', [
@@ -263,6 +268,7 @@ class AttendenceController extends Controller
                 ->join('groupusers', 'groupusers.id', '=', 'users.grup_id')
                 ->select('reports.*', 'users.name', 'groupusers.nama_grup')
                 ->whereBetween('date', [$request->starts_at,$request->ends_at])
+                ->orderBy('date','desc')
                 ->get();
 
             $pdf = Pdf::loadview('attendence.print', [
@@ -278,6 +284,7 @@ class AttendenceController extends Controller
                 ->join('users', 'users.id', '=', 'reports.id_user')
                 ->join('groupusers', 'groupusers.id', '=', 'users.grup_id')
                 ->select('reports.*', 'users.name', 'groupusers.nama_grup')
+                ->orderBy('date','desc')
                 ->get();
 
             $pdf = Pdf::loadview('attendence.print', [

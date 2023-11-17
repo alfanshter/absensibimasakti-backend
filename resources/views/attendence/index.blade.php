@@ -91,6 +91,7 @@
               <th> Picture In </th>
               <th> Check Out </th>
               <th> Picture Out </th>
+              <th> Overtime </th>
             </tr>
           </thead>
           <tbody>
@@ -103,6 +104,11 @@
               <td><img src="{{ asset('storage/' . $data->picture_in) }}" style="width:100px ; height:100px" alt=""></td>
               <td>{{ $data->check_out }}</td>
               <td><img src="{{ asset('storage/' . $data->picture_out) }}" style="width:100px ; height:100px" alt=""></td>
+              @if($data->overtime)
+              <td>{{$data->overtime}} Hours</td>
+              @else
+              <td><center>-</center></td>
+              @endif
             </tr>
             @endforeach
             @else
