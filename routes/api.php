@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AttendenceController;
+use App\Http\Controllers\DailyActivityController;
 use App\Http\Controllers\NotifikasiController;
 use App\Http\Controllers\UserGroupController;
 
@@ -33,3 +34,6 @@ Route::post('/checkout', [AttendenceController::class, 'checkout']);
 
 Route::get('/notifikasi', [NotifikasiController::class, 'index']);
 Route::post('/notifikasi', [NotifikasiController::class, 'store']);
+
+Route::post('/dailyactivity', [DailyActivityController::class, 'store']);
+Route::get('/dailyactivity', [DailyActivityController::class, 'index']);

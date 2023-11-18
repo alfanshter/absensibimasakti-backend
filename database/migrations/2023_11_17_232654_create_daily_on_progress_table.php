@@ -13,13 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('daily_activities', function (Blueprint $table) {
+        Schema::create('daily_on_progress', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('datetime');
-            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreignId('id_user');
-            $table->string('title');
-            $table->string('description')->nullable();
+            $table->foreign('id_photo')->references('id')->on('daily_activities')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('id_photo');
+            $table->string('photo');
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('daily_activities');
+        Schema::dropIfExists('daily_on_progress');
     }
 };

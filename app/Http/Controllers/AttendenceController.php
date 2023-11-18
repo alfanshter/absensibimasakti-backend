@@ -177,7 +177,12 @@ class AttendenceController extends Controller
                 $data = $request->all();
 
                 if ($request->overtime) {
-                    $data['overtime'] = (int)$request->overtime;
+                    if ($request->overtime == 'kosong') {
+                        unset($data['overtime']);
+                    }else{
+                        $data['overtime'] = (int)$request->overtime;                        
+
+                    }
                 }
                 if ($request->file('picture_out')) {
                     //compress foto 
