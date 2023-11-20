@@ -36,4 +36,5 @@ Route::get('/notifikasi', [NotifikasiController::class, 'index']);
 Route::post('/notifikasi', [NotifikasiController::class, 'store']);
 
 Route::post('/dailyactivity', [DailyActivityController::class, 'store']);
+Route::post('/editdaily', [DailyActivityController::class, 'edit']);
 Route::get('/dailyactivity', [DailyActivityController::class, 'index']);

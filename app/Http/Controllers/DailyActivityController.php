@@ -223,4 +223,20 @@ class DailyActivityController extends Controller
         notify()->success('Successfully added');
         return redirect('/notifikasi');
     }
+    
+    function edit(Request $request) {
+        $edit = DailyActivity::where('id',$request->id)->update([
+            'title' => $request->title,
+            'description' => $request->description
+        ]);
+
+        $response = [
+            'message' => 'success',
+            'sukses' => 1,
+            'data' => $edit
+        ];
+
+        return response()->json($response, Response::HTTP_CREATED);
+
+    }
 }
