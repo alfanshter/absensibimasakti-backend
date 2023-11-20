@@ -15,9 +15,11 @@ use Illuminate\Support\Str;
 
 class DailyActivityController extends Controller
 {
-    function index()
+    function index(Request $request)
     {
-        $data = DailyActivity::with('pic_before')
+        $data = DailyActivity::where('id_user',$request->input('id_user'))
+            ->with('user')
+            ->with('pic_before')
             ->with('pic_onprogress')
             ->with('pic_picbefore')
             ->orderBy('datetime', 'desc')
@@ -36,58 +38,6 @@ class DailyActivityController extends Controller
     {
 
         $data = [];
-        $cekdaily = DailyActivity::where('id_user', $request->id_user)
-            ->whereRaw('DATE(datetime) = ?', [date('Y-m-d', time())])
-            ->first();
-
-
-        if ($cekdaily != null) {
-
-            if ($request->jenis_daily == "before") {
-                $response = [
-                    'message' => 'hari ini sudah',
-                    'sukses' => 2,
-                    'data' => null
-                ];
-    
-                return response()->json($response, Response::HTTP_CREATED);
-            }
-
-            if ($cekdaily['description'] !=null) {
-                $response = [
-                    'message' => 'udah uplaod',
-                    'sukses' => 2,
-                    'data' => null
-                ];
-    
-                return response()->json($response, Response::HTTP_CREATED);
-            }
-
-            
-          
-        }else {
-            if ($request->jenis_daily == "progress") {
-                $response = [
-                    'message' => 'tidak ada foto awal',
-                    'sukses' => 3,
-                    'data' => null
-                ];
-    
-                return response()->json($response, Response::HTTP_CREATED);
-            }
-
-            if ($request->jenis_daily == "done") {
-                $response = [
-                    'message' => 'tidak ada foto awal',
-                    'sukses' => 3,
-                    'data' => null
-                ];
-    
-                return response()->json($response, Response::HTTP_CREATED);
-            }
-        }
-
-
 
         $data_post_pic_before = [];
         $data_post_daily_on_progress = [];
@@ -189,26 +139,26 @@ class DailyActivityController extends Controller
 
             foreach ($data_post_daily_on_progress as $photo_onprogress) {
                 $post_onprogress['photo'] = $photo_onprogress['photo'];
-                $post_onprogress['id_photo'] = $cekdaily['id'];
+                $post_onprogress['id_photo'] = $request->id_photo;
                 DailyOnProgress::create($post_onprogress);
             }
         }
 
         if ($request->jenis_daily == "done") {
-            $post = DailyActivity::where('id_user', $request->id_user)->whereRaw('DATE(datetime) = ?', [date('Y-m-d', time())])->update([
+            
+            $postdaily = DailyActivity::where('id_user', $request->id_user)->where('id',$request->id)->update([
                 'description' => $request->description
             ]);
 
+     
+
             foreach ($data_post_daily_pic_afaters as $photo_after) {
                 $post_after['photo'] = $photo_after['photo'];
-                $post_after['id_photo'] = $cekdaily['id'];
+                $post_after['id_photo'] = $request->id;
                 DailyPicAfater::create($post_after);
             }
     
         }
-
-
-
 
 
 
@@ -238,5 +188,16 @@ class DailyActivityController extends Controller
 
         return response()->json($response, Response::HTTP_CREATED);
 
+    }
+
+    function work_onprogress(Request $request) {
+        $data = DailyActivity::where('id_user',$request->input('id_user'))->where('description',null)->get();
+        $response = [
+            'message' => 'success',
+            'sukses' => 1,
+            'data' => $data
+        ];
+
+        return response()->json($response, Response::HTTP_CREATED);
     }
 }

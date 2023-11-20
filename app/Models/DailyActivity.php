@@ -19,6 +19,10 @@ class DailyActivity extends Model
     }
 
     function pic_picbefore() {
-        return $this->hasMany(DailyPicBefore::class,'id_photo','id');
+        return $this->hasMany(DailyPicAfater::class,'id_photo','id');
+    }
+
+    function user() {
+        return $this->belongsTo(User::class,'id_user','id');
     }
 }
