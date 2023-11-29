@@ -100,10 +100,14 @@
             <tr style="background-color: #FFFFFF;">
                 <td colspan="7" style="background-color: #FFFFFF;padding-top: 20px;border-color:#fff"></td>
             </tr>
-            <tr>
+            <tr style="background-color: #FFFFFF;">
                 @if($starts_at!=null && $ends_at!=null )
-                <td colspan="7" style="border-left-color: #FFFFFF;border-right-color:#FFFFFF;padding-bottom:20px"> Date : {{$starts_at}} to {{$ends_at}}</td>
+                <td colspan="7" style="border-left-color: #FFFFFF;border-right-color:#FFFFFF;border-bottom-color: #FFFFFF"> Date : {{$starts_at}} to {{$ends_at}}</td>
                 @endif
+            </tr>
+            <tr style="background-color: #FFFFFF;">
+                <td colspan="7" style="border-left-color: #FFFFFF;border-right-color:#FFFFFF;padding-bottom:20px"> Overtime : {{$overtime}} Hour </td>
+
             </tr>
             <tr>
                 <th class="tg-0pky">No</th>

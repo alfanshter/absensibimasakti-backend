@@ -33,14 +33,14 @@
         @csrf
         <input type="hidden" name="starts_at" value="{{$starts_at}}">
         <input type="hidden" name="ends_at" value="{{$ends_at}}">
-        <input type="hidden" name="grup_id" value="{{$grup_id}}">
+        <input type="hidden" name="id_user" value="{{$id_user}}">
       </form>
 
       <form action="{{url('export_excel')}}" id="form3" method="post">
         @csrf
         <input type="hidden" name="starts_at" value="{{$starts_at}}">
         <input type="hidden" name="ends_at" value="{{$ends_at}}">
-        <input type="hidden" name="grup_id" value="{{$grup_id}}">
+        <input type="hidden" name="id_user" value="{{$id_user}}">
       </form>
 
       <form class="" method="GET" action="{{url('attendence/filter')}}">
@@ -48,10 +48,10 @@
           <div class="form-group row">
             <div class="col-sm-3">
               <div class="form-group">
-                <select class="form-control form-control-lg" aria-label="Default select example" name="grup_id" id="grup_id">
+                <select class="form-control form-control-lg" aria-label="Default select example" name="user_id" id="user_id">
                   <option value="">Pilih Grup</option>
                   @foreach ($grup as $data)
-                  <option value="{{ $data->id }}">{{ $data->nama_grup }}
+                  <option value="{{ $data->id }}">{{ $data->name }}
                   </option>
                   @endforeach
                 </select>
@@ -81,6 +81,9 @@
           </div>
         </div>
       </form>
+      <div>
+        <p>Overtime : {{$overtime}} Hour</p>
+      </div>
       <div class="table-responsive">
         <table class="table table-striped table-bordered" id="attendence">
           <thead>
@@ -98,7 +101,7 @@
             @if($attendence->count())
             @foreach ($attendence as $data)
             <tr>
-              <td>{{ $data->nama_grup }}</td>
+              <td>{{ $data->name }}</td>
               <td>{{ $data->date }}</td>
               <td>{{ $data->check_in }}</td>
               <td><img src="{{ asset('storage/' . $data->picture_in) }}" style="width:100px ; height:100px" alt=""></td>
@@ -120,10 +123,10 @@
         </table>
       </div>
       <div class="d-flex justify-content-right mt-4">
-        @if($starts_at==null && $ends_at==null && $grup_id==null )
+        @if($starts_at==null && $ends_at==null && $id_user==null )
             {{ $attendence->links() }}
         @else
-            {{$attendence->appends(['starts_at' => $starts_at,'ends_at'=>$ends_at,'grup_id'=>$grup_id])->links()}}
+            {{$attendence->appends(['starts_at' => $starts_at,'ends_at'=>$ends_at,'id_user'=>$id_user])->links()}}
         @endif
       </div>
     </div>

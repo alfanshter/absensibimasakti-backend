@@ -200,4 +200,17 @@ class DailyActivityController extends Controller
 
         return response()->json($response, Response::HTTP_CREATED);
     }
+
+    function index_admin()
+    {
+        $data = DailyActivity::with('user')
+        ->with('pic_before')->with(
+            'pic_picbefore'
+        )->orderBy('created_at','desc')->get();
+
+        return view('daily.daily', [
+            'data' => $data
+        ]);
+    }
+
 }

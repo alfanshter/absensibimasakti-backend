@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\ImageManagerStatic as Image;
 use App\Exports\ReportExport;
+use App\Models\User;
 use Maatwebsite\Excel\Facades\Excel;
 
 
@@ -24,19 +25,21 @@ class AttendenceController extends Controller
         if (Auth::check()) {
 
             $report = DB::table('reports')
-            ->join('users', 'users.id', '=', 'reports.id_user')
-            ->join('groupusers', 'groupusers.id', '=', 'users.grup_id')
-            ->orderBy('date','desc')
-            ->select('reports.*', 'users.name', 'groupusers.nama_grup')->paginate(10);
+                ->join('users', 'users.id', '=', 'reports.id_user')
+                ->join('groupusers', 'groupusers.id', '=', 'users.grup_id')
+                ->orderBy('date', 'desc')
+                ->select('reports.*', 'users.name', 'groupusers.nama_grup')->paginate(10);
+            $overtime = Report::sum('overtime');
 
-            $grup_id = null;
+            $id_user = null;
             $starts_at = null;
             $ends_at = null;
 
             $data = [
                 'attendence' => $report,
-                'grup' => UserGroup::all(),
-                'grup_id' => $grup_id,
+                'grup' => User::all(),
+                'id_user' => $id_user,
+                'overtime' => $overtime,
                 'starts_at' => $starts_at,
                 'ends_at' => $ends_at
             ];
@@ -48,34 +51,36 @@ class AttendenceController extends Controller
 
 
     public function filter(Request $request)
-    {        
-        $starts_at = $_GET['starts_at'];
-        $ends_at =   $_GET['ends_at'];
-        $grup_id =   $_GET['grup_id'];
+    {
+        $starts_at = $request->input('starts_at');
+        $ends_at = $request->input('ends_at');
+        $id_user = $request->input('user_id');
+        if ($id_user != "") {
+            $report = Report::with('user:id,name,email')
+                ->where('id_user', $id_user)
+                ->whereBetween('date', [$starts_at, $ends_at])
+                ->paginate(10);
 
-        if($grup_id!=""){
-            $report = DB::table('reports')
-                ->join('users', 'users.id', '=', 'reports.id_user')
-                ->join('groupusers', 'groupusers.id', '=', 'users.grup_id')
-                ->where('groupusers.id',$grup_id)
+            $overtime = Report::where('id_user', $id_user)
                 ->whereBetween('date', [$starts_at, $ends_at])
-                ->select('reports.*', 'users.name', 'groupusers.*')
-                ->paginate(10);
-        }else{
-            $report = DB::table('reports')
-                ->join('users', 'users.id', '=', 'reports.id_user')
-                ->join('groupusers', 'groupusers.id', '=', 'users.grup_id')
+                ->sum('overtime');
+        } else {
+
+            $report = Report::with('user:id,name,email')
                 ->whereBetween('date', [$starts_at, $ends_at])
-                ->select('reports.*', 'users.name', 'groupusers.*')
                 ->paginate(10);
+
+            $overtime = Report::whereBetween('date', [$starts_at, $ends_at])
+                ->sum('overtime');
         }
 
         return view('attendence.index', [
             'attendence' => $report,
-            'grup' => UserGroup::all(),
+            'grup' => User::all(),
             'starts_at' => $starts_at,
             'ends_at' => $ends_at,
-            'grup_id' => $grup_id,
+            'id_user' => $id_user,
+            'overtime' => $overtime,
 
         ]);
     }
@@ -160,7 +165,7 @@ class AttendenceController extends Controller
         }
 
         //cek absen apakah ada 
-        $cekabsen = Report::where('id_user', $request->id_user)->where('date', date('Y-m-d',time()))
+        $cekabsen = Report::where('id_user', $request->id_user)->where('date', date('Y-m-d', time()))
             ->first();
         if ($cekabsen != null) {
             if ($cekabsen->check_out != null) {
@@ -179,9 +184,8 @@ class AttendenceController extends Controller
                 if ($request->overtime) {
                     if ($request->overtime == 'kosong') {
                         unset($data['overtime']);
-                    }else{
-                        $data['overtime'] = (int)$request->overtime;                        
-
+                    } else {
+                        $data['overtime'] = (int)$request->overtime;
                     }
                 }
                 if ($request->file('picture_out')) {
@@ -247,55 +251,67 @@ class AttendenceController extends Controller
 
     public function print_attendence(Request $request)
     {
-        $name = 'attendence'.date('Ymd').'.pdf';
+        $name = 'attendence' . date('Ymd') . '.pdf';
+        $overtime = 0;
+        if ($request->starts_at != null && $request->ends_at != null && $request->grup_id != null) {
 
-        if ($request->starts_at != null && $request->ends_at!= null && $request->grup_id!=null) {
-            $report = DB::table('reports')
-                ->join('users', 'users.id', '=', 'reports.id_user')
-                ->join('groupusers', 'groupusers.id', '=', 'users.grup_id')
-                ->select('reports.*', 'users.name', 'groupusers.nama_grup')
-                ->where('users.grup_id', '=', $request->grup_id)
-                ->whereBetween('date', [$request->starts_at,$request->ends_at])
-                ->orderBy('date','desc')
-                ->get();
+            $report = Report::with('user:id,name,email')
+                ->where('id_user', $request->id_user)
+                ->whereBetween('date', [$request->starts_at, $request->ends_at])
+                ->orderBy('date', 'desc')
+                ->paginate(10);
+
+            $overtime = Report::where('id_user', $request->id_user)
+                ->whereBetween('date', [$request->starts_at, $request->ends_at])
+                ->sum('overtime');
 
             $pdf = Pdf::loadview('attendence.print', [
                 'attendence' => $report,
                 'starts_at' => $request->starts_at,
-                'ends_at' => $request->ends_at
+                'ends_at' => $request->ends_at,
+                'overtime' => $overtime,
             ]);
             $pdf->setPaper('A4', 'potrait');
             // return $pdf->download($name);
             return $pdf->stream();
-        } else if ($request->starts_at!=null && $request->ends_at!=null) {
-            $report = DB::table('reports')
-                ->join('users', 'users.id', '=', 'reports.id_user')
-                ->join('groupusers', 'groupusers.id', '=', 'users.grup_id')
-                ->select('reports.*', 'users.name', 'groupusers.nama_grup')
-                ->whereBetween('date', [$request->starts_at,$request->ends_at])
-                ->orderBy('date','desc')
-                ->get();
+        } else if ($request->starts_at != null && $request->ends_at != null) {
+
+            $report = Report::with('user:id,name,email')
+                ->where('id_user', $request->id_user)
+                ->whereBetween('date', [$request->starts_at, $request->ends_at])
+                ->orderBy('date', 'desc')
+                ->paginate(10);
+
+            $overtime = Report::where('id_user', $request->id_user)
+                ->whereBetween('date', [$request->starts_at, $request->ends_at])
+                ->sum('overtime');
+
 
             $pdf = Pdf::loadview('attendence.print', [
                 'attendence' => $report,
                 'starts_at' => $request->starts_at,
-                'ends_at' => $request->ends_at
+                'ends_at' => $request->ends_at,
+                'overtime' => $overtime
             ]);
             $pdf->setPaper('A4', 'potrait');
             // return $pdf->download($name);
             return $pdf->stream();
         } else {
-            $report = DB::table('reports')
-                ->join('users', 'users.id', '=', 'reports.id_user')
-                ->join('groupusers', 'groupusers.id', '=', 'users.grup_id')
-                ->select('reports.*', 'users.name', 'groupusers.nama_grup')
-                ->orderBy('date','desc')
-                ->get();
+
+
+            $report = Report::with('user:id,name,email')
+                ->where('id_user', $request->id_user)
+                ->orderBy('date', 'desc')
+                ->paginate(10);
+
+            $overtime = Report::where('id_user', $request->id_user)
+                ->sum('overtime');
 
             $pdf = Pdf::loadview('attendence.print', [
                 'attendence' => $report,
                 'starts_at' => null,
-                'ends_at' => null
+                'ends_at' => null,
+                'overtime' => $overtime
 
             ]);
             $pdf->setPaper('A4', 'potrait');
@@ -306,9 +322,7 @@ class AttendenceController extends Controller
 
     public function export(Request $request)
     {
-        $name = 'attendence'.date('Ymd').'.xlsx';
-        return (new ReportExport($request->grup_id,$request->starts_at,$request->ends_at))->download($name);
-
-
+        $name = 'attendence' . date('Ymd') . '.xlsx';
+        return (new ReportExport($request->grup_id, $request->starts_at, $request->ends_at))->download($name);
     }
 }

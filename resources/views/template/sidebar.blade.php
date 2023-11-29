@@ -58,6 +58,13 @@
         <i class="mdi mdi-home menu-icon"></i>
       </a>
     </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="/daily">
+        <span class="menu-title">Daily Activity</span>
+        <i class="mdi mdi-home menu-icon"></i>
+      </a>
+    </li>
     @endif
 
     

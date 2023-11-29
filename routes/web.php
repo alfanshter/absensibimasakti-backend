@@ -12,6 +12,7 @@ use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\WorkController;
 use App\Http\Controllers\TesController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DailyActivityController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NotifikasiController;
 
@@ -126,4 +127,6 @@ Route::get('/notifikasi', [NotifikasiController::class, 'index_admin']);
 Route::post('/notifikasi', [NotifikasiController::class, 'store']);
 Route::delete('/notifikasi/{id?}', [NotifikasiController::class, 'delete']);
 Route::post('/editnotifikasi', [NotifikasiController::class, 'edit']);
+
+Route::get('/daily', [DailyActivityController::class, 'index_admin']);
 
