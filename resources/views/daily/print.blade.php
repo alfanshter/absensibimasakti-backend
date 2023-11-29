@@ -93,8 +93,8 @@
 
         <tbody>
             <tr class="tr-header">
-                <td class="tg-q9j0" colspan="8"><span style="font-weight:bold">LAPORAN ABSENSI</span><br>
-                    <hr style="width: 140px;"><span style="font-weight:bold">ATTENDENCE</span>
+                <td class="tg-q9j0" colspan="8"><span style="font-weight:bold">LAPORAN AKTIVITAS HARIAN</span><br>
+                    <hr style="width: 140px;"><span style="font-weight:bold">DAILY ACTIVITY</span>
                 </td>
             </tr>
             <tr style="background-color: #FFFFFF;">
@@ -105,45 +105,34 @@
                 <td colspan="8" style="border-left-color: #FFFFFF;border-right-color:#FFFFFF;border-bottom-color: #FFFFFF"> Date : {{$starts_at}} to {{$ends_at}}</td>
                 @endif
             </tr>
-            <tr style="background-color: #FFFFFF;">
-                <td colspan="8" style="border-left-color: #FFFFFF;border-right-color:#FFFFFF;padding-bottom:20px"> Overtime : {{$overtime}} Hour </td>
-
-            </tr>
             <tr>
                 <th class="tg-0pky">No</th>
-                <th class="tg-pht7">Group</th>
                 <th class="tg-pht7">Date</th>
-                <th class="tg-pht7">Check In</th>
-                <th class="tg-pht7">Picture In</th>
-                <th class="tg-pht7">Check Out</th>
-                <th class="tg-pht7">Picture Out</th>
-                <th class="tg-pht7">Overtime</th>
+                <th class="tg-pht7">Time</th>
+                <th class="tg-pht7">TL</th>
+                <th class="tg-pht7">Title</th>
+                <th class="tg-pht7">Pic Before</th>
+                <th class="tg-pht7">Pic After</th>
+                <th class="tg-pht7">Description</th>
             </tr>
-            @foreach($attendence as $data)
+            @foreach($data as $datas)
             <tr>
                 <td class="tg-0pky">{{$loop->iteration}}</td>
-                <td class="tg-pht7">{{$data->nama_grup}}</td>
-                <td class="tg-pht7">{{$data->date}}</td>
-                <td class="tg-pht7">{{$data->check_in}}</td>
+                <td class="tg-pht7">{{ \Carbon\Carbon::parse($datas->datetime)->format('Y-m-d') }}</td>
+                <td class="tg-pht7">{{ \Carbon\Carbon::parse($datas->datetime)->format('H:i:s') }}</td>
+                <td class="tg-pht7">{{$datas->user->name}}</td>
+                <td class="tg-pht7">{{$datas->title}}</td>
                 <td class="tg-pht7">
-                    @if($data->picture_in !=null)
-                    <img style="width: 100px; height:100px" src="{{public_path('storage/'.$data->picture_in)}}" alt="" srcset="">
-                    @endif
+                    @foreach($datas->pic_before as $picbefores)
+                    <img style="width: 100px; height:100px;margin-top:5px" src="{{public_path('storage/'.$picbefores->photo)}}" alt="" srcset="">
+                    @endforeach
                 </td>
-                <td class="tg-pht7">{{$data->check_out}}</td>
                 <td class="tg-pht7">
-                    @if($data->picture_in !=null)
-
-                    <img style="width: 100px; height:100px" src="{{public_path('storage/'.$data->picture_out)}}" alt="" srcset="">
-                    @endif
+                    @foreach($datas->pic_picbefore as $picafter)
+                    <img style="width: 100px; height:100px;margin-top:5px" src="{{public_path('storage/'.$picafter->photo)}}" alt="" srcset="">
+                    @endforeach
                 </td>
-                @if($data->overtime)
-                <td class="tg-pht7">{{$data->overtime}} Hours</td>
-                @else
-                <td class="tg-pht7">
-                    <center>-</center>
-                </td>
-                @endif
+                <td class="tg-pht7">{{$datas->description}}</td>
             </tr>
             @endforeach
         </tbody>

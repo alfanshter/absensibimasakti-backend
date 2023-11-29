@@ -129,4 +129,6 @@ Route::delete('/notifikasi/{id?}', [NotifikasiController::class, 'delete']);
 Route::post('/editnotifikasi', [NotifikasiController::class, 'edit']);
 
 Route::get('/daily', [DailyActivityController::class, 'index_admin']);
+Route::get('/daily/filter', [DailyActivityController::class, 'filter']);
+Route::post('/print_daily', [DailyActivityController::class, 'print_daily']);
 

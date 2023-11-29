@@ -6,6 +6,8 @@ use App\Models\DailyActivity;
 use App\Models\DailyOnProgress;
 use App\Models\DailyPicAfater;
 use App\Models\DailyPicBefore;
+use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -17,7 +19,7 @@ class DailyActivityController extends Controller
 {
     function index(Request $request)
     {
-        $data = DailyActivity::where('id_user',$request->input('id_user'))
+        $data = DailyActivity::where('id_user', $request->input('id_user'))
             ->with('user')
             ->with('pic_before')
             ->with('pic_onprogress')
@@ -145,19 +147,18 @@ class DailyActivityController extends Controller
         }
 
         if ($request->jenis_daily == "done") {
-            
-            $postdaily = DailyActivity::where('id_user', $request->id_user)->where('id',$request->id)->update([
+
+            $postdaily = DailyActivity::where('id_user', $request->id_user)->where('id', $request->id)->update([
                 'description' => $request->description
             ]);
 
-     
+
 
             foreach ($data_post_daily_pic_afaters as $photo_after) {
                 $post_after['photo'] = $photo_after['photo'];
                 $post_after['id_photo'] = $request->id;
                 DailyPicAfater::create($post_after);
             }
-    
         }
 
 
@@ -173,9 +174,10 @@ class DailyActivityController extends Controller
         notify()->success('Successfully added');
         return redirect('/notifikasi');
     }
-    
-    function edit(Request $request) {
-        $edit = DailyActivity::where('id',$request->id)->update([
+
+    function edit(Request $request)
+    {
+        $edit = DailyActivity::where('id', $request->id)->update([
             'title' => $request->title,
             'description' => $request->description
         ]);
@@ -187,11 +189,11 @@ class DailyActivityController extends Controller
         ];
 
         return response()->json($response, Response::HTTP_CREATED);
-
     }
 
-    function work_onprogress(Request $request) {
-        $data = DailyActivity::where('id_user',$request->input('id_user'))->where('description',null)->get();
+    function work_onprogress(Request $request)
+    {
+        $data = DailyActivity::where('id_user', $request->input('id_user'))->where('description', null)->get();
         $response = [
             'message' => 'success',
             'sukses' => 1,
@@ -204,13 +206,101 @@ class DailyActivityController extends Controller
     function index_admin()
     {
         $data = DailyActivity::with('user')
-        ->with('pic_before')->with(
-            'pic_picbefore'
-        )->orderBy('created_at','desc')->get();
-
+            ->with('pic_before')->with(
+                'pic_picbefore'
+            )->orderBy('created_at', 'desc')->get();
+        $starts_at = null;
+        $ends_at = null;
+        $id_user = null;
+        $user = User::all();
         return view('daily.daily', [
-            'data' => $data
+            'data' => $data,
+            'user' => $user,
+            'starts_at' => $starts_at,
+            'ends_at' => $ends_at,
+            'id_user' => $id_user
+
         ]);
     }
 
+    public function filter(Request $request)
+    {
+        $starts_at = $request->input('starts_at');
+        $ends_at = $request->input('ends_at');
+        $id_user = $request->input('user_id');
+        if ($id_user != "") {
+            $data = DailyActivity::with('user')
+                ->where('id_user', $id_user)
+                ->whereBetween('datetime', [$starts_at, $ends_at])
+                ->paginate(10);
+        } else {
+
+            $data = DailyActivity::with('user')
+                ->whereBetween('datetime', [$starts_at, $ends_at])
+                ->paginate(10);
+        }
+
+        return view('daily.daily', [
+            'data' => $data,
+            'user' => User::all(),
+            'starts_at' => $starts_at,
+            'ends_at' => $ends_at,
+            'id_user' => $id_user,
+
+        ]);
+    }
+
+
+    public function print_daily(Request $request)
+    {
+
+        if ($request->starts_at != null && $request->ends_at != null && $request->grup_id != null) {
+
+
+            $report = DailyActivity::with('user')
+                ->whereBetween('datetime', [$request->starts_at, $request->ends_at])
+                ->orderBy('datetime', 'desc')
+                ->get();
+
+            $pdf = Pdf::loadview('daily.print', [
+                'data' => $report,
+                'starts_at' => $request->starts_at,
+                'ends_at' => $request->ends_at,
+            ]);
+            $pdf->setPaper('A4', 'potrait');
+            // return $pdf->download($name);
+            return $pdf->stream();
+        } else if ($request->starts_at != null && $request->ends_at != null) {
+
+            $report = DailyActivity::with('user')
+                ->where('id_user', $request->id_user)
+                ->whereBetween('datetime', [$request->starts_at, $request->ends_at])
+                ->orderBy('datetime', 'desc')
+                ->get();
+
+            $pdf = Pdf::loadview('daily.print', [
+                'data' => $report,
+                'starts_at' => $request->starts_at,
+                'ends_at' => $request->ends_at,
+            ]);
+            $pdf->setPaper('A4', 'potrait');
+            // return $pdf->download($name);
+            return $pdf->stream();
+        } else {
+
+            $report = DailyActivity::with('user')
+                ->where('id_user', $request->id_user)
+                ->orderBy('datetime', 'desc')
+                ->get();
+
+                $pdf = Pdf::loadview('daily.print', [
+                    'data' => $report,
+                    'starts_at' => $request->starts_at,
+                    'ends_at' => $request->ends_at,
+                ]);
+                $pdf->setPaper('A4', 'potrait');
+                // return $pdf->download($name);
+                return $pdf->stream();
+        }
+    }
 }

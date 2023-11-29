@@ -11,6 +11,54 @@
 <div class="col-lg-12">
   <div class="card">
     <div class="card-body">
+      
+    
+    <form action="{{url('print_daily')}}" id="form2" method="post">
+        @csrf
+        <input type="hidden" name="starts_at" value="{{$starts_at}}">
+        <input type="hidden" name="ends_at" value="{{$ends_at}}">
+        <input type="hidden" name="id_user" value="{{$id_user}}">
+      </form>
+
+
+    <form class="" method="GET" action="{{url('daily/filter')}}">
+        <div class="row">
+          <div class="form-group row">
+            <div class="col-sm-3">
+              <div class="form-group">
+                <select class="form-control form-control-lg" aria-label="Default select example" name="user_id" id="user_id">
+                  <option value="">Pilih Grup</option>
+                  @foreach ($user as $datas)
+                  <option value="{{ $datas->id }}">{{ $datas->name }}
+                  </option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <input type="text" class="form-control form-control-lg" required id="starts_at" name="starts_at" placeholder="Start At" onfocus="(this.type='date')">
+            </div>
+            <div class="col-sm-2">
+              <input type="text" class="form-control form-control-lg" required id="ends_at" placeholder="End At" name="ends_at" onfocus="(this.type='date')">
+            </div>
+            <div class="col-sm-2 col-form-label">
+              <button type="submit" class="btn btn-sm btn-gradient-primary ">Search</button>
+            </div>
+            <div class="col-sm-2  col-form-label">
+              <div class="dropdown">
+                <button class="btn btn-sm btn-gradient-primary  dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                  Export
+                </button>
+                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton2">
+                  <li><button type="submit" class="dropdown-item active" form="form2">Pdf</button></li>
+                  <li><button type="submit" class="dropdown-item" form="form3">Excel</button></li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </form>
       <div class="table-responsive">
         <table class="table table-striped table-bordered" id="user">
           <thead>
