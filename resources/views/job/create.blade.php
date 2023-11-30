@@ -11,25 +11,72 @@
         </div>
     </div>
     <div class="row">
+        <!-- KLASIFIKASI PEKERJAAN -->
         <div class="col-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
+                    <h6 class="card-title">KLASIFIKASI PEKERJAAN</h6>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Ruang Terbatas"> Ruang Terbatas </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Kerja Listrik"> Kerja Listrik </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Ketinggian"> Ketinggian </label>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Perpipaan"> Perpipaan </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Kerja Panas"> Kerja Panas </label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END KLASIFIKASI PEKERJAAN -->
+
+        <!-- INFORMASI PEKERJAAN -->
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">INFORMASI PEKERJAAN</h6><br>
+
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Ref ID</label>
+                                <label>Pekerjaan</label>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control" name="ref_id" id="ref_id" required />
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Job Title</label>
+                                <label>Lokasi</label>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control" name="job_title" id="job_title" required />
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Team Work</label>
+                                <label>Area</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="team_work" id="team_work" required />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Pengawas</label>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control" name="team_work" id="team_work" required />
                                 </div>
@@ -37,30 +84,219 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Work Location</label>
+                                <label>Plant</label>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control" name="work_location" id="work_location" required />
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Number of Personal Working</label>
+                                <label>Nama Pemohon</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="number" id="number" required />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Perusahaan Pemohon </label>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control" name="number" id="number" required />
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <h6 class="card-title">DAFTAR PEKERJA</h6><br>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Teknisi</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="ref_id" id="ref_id" required />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Helper</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="job_title" id="job_title" required />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Welder</label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="team_work" id="team_work" required />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
                 </div>
             </div>
         </div>
+        <!-- END INFORMASI PEKERJAAN -->
+
+        <!-- PERLENGKAPAN KERJA -->
         <div class="col-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
-                    <h6 class="card-title">Critical Question</h6>
+                    <h6 class="card-title">PERLENGKAPAN KERJA</h6>
+                    <a href="javascript:void(0)" class="btn btn-gradient-primary btn-icon-text btn-sm mb-2" onClick="add()">
+                        <i class="mdi mdi-plus-box btn-icon-prepend"></i> Add </a>
+
+                    <div class="table-responsive">
+                        <input type="hidden" name="kode" id="kode" value="{{ $kode }}">
+                        <table class="table table-striped table-bordered" id="aar">
+                            <thead>
+                                <tr>
+                                    <th> Action </th>
+                                    <th> No </th>
+                                    <th> Peralatan </th>
+                                    <th> Jumlah Peralatan </th>
+                                    <th> Material</th>
+                                    <th> Jumlah Material</th>
+                                    <th> Keterangan </th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END PERLENGKAPAN KERJA -->
+
+        <!--  LINGKUNGAN KERJA YANG HARUS DI CEK -->
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">4. LINGKUNGAN KERJA YANG HARUS DI CEK</h6>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Terdapat material yg mudah terbakar"> Terdapat material yg mudah terbakar </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Terdapat material yg mudah menyala"> Terdapat material yg mudah menyala </label>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Terdapat Jalur Pipa Gas"> Terdapat Jalur Pipa Gas </label>
+                            </div>
+
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Terdapat Jalur Kabel/Listrik"> Terdapat Jalur Kabel/Listrik </label>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END  LINGKUNGAN KERJA YANG HARUS DI CEK -->
+
+        <!-- KESELAMATAN KERJA -->
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">5. KESELAMATAN KERJA</h6>
+                    <a href="javascript:void(0)" class="btn btn-gradient-primary btn-icon-text btn-sm mb-2" onClick="add_keselamatan()">
+                        <i class="mdi mdi-plus-box btn-icon-prepend"></i> Add </a>
+
+                    <div class="table-responsive">
+                        <input type="hidden" name="kode" id="kode" value="{{ $kode }}">
+                        <table class="table table-striped table-bordered" id="aar">
+                            <thead>
+                                <tr>
+                                    <th> Action </th>
+                                    <th> No </th>
+                                    <th> Aktivitas</th>
+                                    <th> Potensi Bahaya </th>
+                                    <th> Langkah Aman Pekerjaan </th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END KESELAMATAN KERJA -->
+
+        <!-- 6. APD YANG DIPERLUKAN -->
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">6. APD YANG DIPERLUKAN</h6>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Safety Helmet"> Safety Helmet</label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Safet Glasses"> Safet Glasses </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Hand Protection"> Hand Protection </label>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Safety Mask"> Safety Mask </label>
+                            </div>
+
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Safety Shoes"> Safety Shoes </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Apron"> Apron </label>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Body Harness"> Body Harness </label>
+                            </div>
+
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Ear Protection"> Ear Protection </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Others"> Others </label>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END  APD YANG DIPERLUKAN -->
+     
+        <!-- 7. CHECK PERSONAL YANG TERLIBAT -->
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">7. CHECK PERSONAL YANG TERLIBAT</h6>
                     <div class="row">
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="">Every One Capable to Work</label>
+                                <label class="">Apakah personel yg bekerja merasa tdk sehat</label>
                                 <div class="col-sm-3">
                                     <div class="form-check">
                                         <label class="form-check-label">
@@ -77,7 +313,7 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="">Potensi Tumpahan / Gas Release Telah Dicegah ?</label>
+                                <label class="">Kecukupan APD ?</label>
                                 <div class="col-sm-3">
                                     <div class="form-check">
                                         <label class="form-check-label">
@@ -94,7 +330,24 @@
                         </div>
                         <div class="col-md-4">
                             <div class="form-group">
-                                <label class="">Worst Case Discussed</label>
+                                <label class="">Pekerja memahami prosedur keadaan darurat</label>
+                                <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="cqwc" id="cqwc" value="yes" required> Yes </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="cqwc" id="cqwc" value="no" required> No </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="">Pekerja mengerti cara penggunaan APAR</label>
                                 <div class="col-sm-3">
                                     <div class="form-check">
                                         <label class="form-check-label">
@@ -113,7 +366,70 @@
                 </div>
             </div>
         </div>
+        <!-- END  7. CHECK PERSONAL YANG TERLIBAT -->
+
+
+        
+        <!-- 8. KOMITMEN -->
         <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">8. KOMITMEN</h6><br>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label> Saya telah memahami dan akan mematuhi scope & area kerja serta aspek safety seperti tersebut di atas</label><br>
+                                <label> <strong>Penerima Ijin</strong></label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="penerima_ijin" id="penerima_ijin" required />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label><strong>Tanggal</strong></label>
+                                <div class="col-sm-9">
+                                    <input type="date" class="form-control" name="tanggal" id="tanggal" required />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- END KOMITMEN -->
+
+                
+        <!-- 9. KOMITMEN -->
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">8. KOMITMEN</h6><br>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label> Saya telah memahami dan akan mematuhi scope & area kerja serta aspek safety seperti tersebut di atas</label><br>
+                                <label> <strong>Penerima Ijin</strong></label>
+                                <div class="col-sm-9">
+                                    <input type="text" class="form-control" name="penerima_ijin" id="penerima_ijin" required />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label><strong>Tanggal</strong></label>
+                                <div class="col-sm-9">
+                                    <input type="date" class="form-control" name="tanggal" id="tanggal" required />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- END KOMITMEN -->
+
+        <!-- <div class="col-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
@@ -168,134 +484,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="col-12 grid-margin stretch-card">
-            <div class="card">
-                <div class="card-body">
-                    <h6 class="card-title">PPE will be use / wear on this job</h6>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Helmet Safety"> Helmet Safety </label>
-                            </div>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Safety Shoes"> Safety Shoes </label>
-                            </div>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Safety Glasses"> Safety Glasses </label>
-                            </div>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Cotton Glove"> Cotton Glove </label>
-                            </div>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Rubber Glove"> Rubber Glove </label>
-                            </div>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Leather Glove"> Leather Glove </label>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Vest Jacket"> Vest Jacket </label>
-                            </div>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Safety Harness"> Safety Harness </label>
-                            </div>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Half Face Shield"> Half Face Shield </label>
-                            </div>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Half Face Shield"> Half Face Shield </label>
-                            </div>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Half Face Shield"> Half Face Shield </label>
-                            </div>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Chemical Respirator"> Chemical Respirator </label>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Self Apparatus"> Self Apparatus </label>
-                            </div>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Apron"> Apron </label>
-                            </div>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Cover All / Tyvex / Tychem"> Cover All / Tyvex / Tychem </label>
-                            </div>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Eye shower"> Eye shower </label>
-                            </div>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="APAR"> APAR (Fire Extinguisher) </label>
-                            </div>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Barricade Tape"> Barricade Tape / Safety line </label>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Lock Out Tag Out"> Lock Out Tag Out </label>
-                            </div>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Ijin Kerja"> Ijin Kerja (Pengelasan / Contined Space)? (Permit to Work to Work(hot work, confined spuces)) </label>
-                            </div>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input type="checkbox" class="form-check-input" name="cb_ppe[]" id="cb_ppe[]" value="Other"> Lain - Lain (Other) </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 grid-margin stretch-card">
-            <div class="card">
-                <div class="card-body">
-                    <h6 class="card-title">After Action Review (AAR)</h6>
-                    <a href="javascript:void(0)" class="btn btn-gradient-primary btn-icon-text btn-sm mb-2" onClick="add()">
-                        <i class="mdi mdi-plus-box btn-icon-prepend"></i> Add </a>
+        </div> -->
 
-                    <div class="table-responsive">
-                        <input type="hidden" name="kode" id="kode" value="{{ $kode }}">
-                        <table class="table table-striped table-bordered" id="aar">
-                            <thead>
-                                <tr>
-                                    <th> Action </th>
-                                    <th> Date </th>
-                                    <th> Sequence Of Job Steps </th>
-                                    <th> Potensial Hazard & Risk </th>
-                                    <th> Reduce Potential</th>
-                                    <th> PIC </th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </form>
 
@@ -310,24 +500,65 @@
                     <input type="hidden" name="id" id="id">
                     <input type="hidden" name="kode" id="kode" value="{{ $kode }}">
                     <div class="form-group">
-                        <label for="exampleInputName1">Date</label>
-                        <input type="date" class="form-control" id="date" name="date" required>
+                        <label for="exampleInputName1">Peralatan</label>
+                        <input type="date" class="form-control" id="peralatan" name="peralatan" required>
                     </div>
                     <div class="form-group">
-                        <label for="exampleTextarea1">Sequence of Job Steps</label>
-                        <textarea class="form-control" id="sequence_of_job_step" name="sequence_of_job_step" rows="4" required></textarea>
+                        <label for="exampleTextarea1">Jumlah Peralatan</label>
+                        <textarea class="form-control" id="jumlah_peralatan" name="jumlah_peralatan" rows="4" required></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="exampleTextarea1">Potential Hazard & Risk</label>
-                        <textarea class="form-control" id="potential_hazard" name="potential_hazard" rows="4" required></textarea>
+                        <label for="exampleTextarea1">Material</label>
+                        <textarea class="form-control" id="material" name="material" rows="4" required></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="exampleTextarea1">How To Reduce Potential Hazard & Risk</label>
-                        <textarea class="form-control" id="reduce_potential" name="reduce_potential" rows="4" required></textarea>
+                        <label for="exampleTextarea1">Jumlah Material</label>
+                        <textarea class="form-control" id="jumlah_material" name="jumlah_material" rows="4" required></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputName1">PIC</label>
-                        <input type="text" class="form-control" id="pic" name="pic" required>
+                        <label for="exampleInputName1">Keterangan</label>
+                        <input type="text" class="form-control" id="keterangan" name="keterangan" required>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="close">Close</button>
+                <button type="submit" id="save-aar" name="" class="btn btn-primary">Save</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modal_keselamatan" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Keselamatan Kerja</h5>
+            </div>
+            <div class="modal-body">
+                <form class="add_aar" id="add_aar" name="add_aar" action="javascript:void(0)" method="POST">
+                    <input type="hidden" name="id" id="id">
+                    <input type="hidden" name="kode" id="kode" value="{{ $kode }}">
+                    <div class="form-group">
+                        <label for="exampleInputName1">Aktivitas</label>
+                        <input type="date" class="form-control" id="aktivitas" name="aktivitas" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleTextarea1">Potensi Bahaya</label>
+                        <textarea class="form-control" id="jumlah_peralatan" name="jumlah_peralatan" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleTextarea1">Material</label>
+                        <textarea class="form-control" id="material" name="material" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleTextarea1">Jumlah Material</label>
+                        <textarea class="form-control" id="jumlah_material" name="jumlah_material" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputName1">Keterangan</label>
+                        <input type="text" class="form-control" id="keterangan" name="keterangan" required>
                     </div>
             </div>
             <div class="modal-footer">
@@ -382,6 +613,10 @@
                         data: 'pic',
                         name: 'pic'
                     },
+                    {
+                        data: 'keterangan',
+                        name: 'keterangan'
+                    },
                 ]
             });
         });
@@ -390,14 +625,22 @@
 
     function add() {
         $('#add_aar').trigger("reset");
-        $('#exampleModalLabel').html("Add AAR");
+        $('#exampleModalLabel').html("Tambah Perlengkapan Kerja");
         $('#modalAar').modal('show');
+        $('#id').val('');
+    }
+
+    function add_keselamatan() {
+        $('#add_keselamatan').trigger("reset");
+        $('#exampleModalLabel').html("Tambah Perlengkapan Kerja");
+        $('#modal_keselamatan').modal('show');
         $('#id').val('');
     }
 
     $("#close").click(function() {
         $("#modalAar").modal('hide');
     });
+
 
     function editFunc(id) {
         $.ajax({

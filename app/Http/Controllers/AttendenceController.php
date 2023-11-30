@@ -226,6 +226,59 @@ class AttendenceController extends Controller
                 return response()->json($response, Response::HTTP_CREATED);
             }
         } else {
+            //cek absen hari sebelumnya apakah sudah absen pulang atau belum
+            $cekabsensebelum = Report::where('id_user', $request->id_user)
+                ->where('date', now()->subDay()->format('Y-m-d'))
+                ->first();
+
+            if ($cekabsensebelum->picture_in != null && $cekabsensebelum->picture_out == null) {
+
+                $data = $request->all();
+
+                if ($request->overtime) {
+                    if ($request->overtime == 'kosong') {
+                        unset($data['overtime']);
+                    } else {
+                        $data['overtime'] = (int)$request->overtime;
+                    }
+                }
+                if ($request->file('picture_out')) {
+                    //compress foto 
+                    $foto = $request->file('picture_out');
+                    $fotoName = time() . '.' . $foto->extension();
+
+                    // open an image file
+                    $img = Image::make($foto->path());
+
+                    // prevent possible upsizing
+                    $img->resize(null, 200, function ($constraint) {
+                        $constraint->aspectRatio();
+                        $constraint->upsize();
+                    });
+
+                    // finally we save the image as a new file
+                    $destinationPath = public_path('/storage/foto/' . $fotoName);
+                    $data['picture_out'] = 'foto/' . $fotoName;
+                    $img->save($destinationPath);
+
+                    // $data['picture_out'] = $request->file('picture_out')->store('foto', 'public');
+                }
+
+                date_default_timezone_set('Asia/Jakarta');
+                $hari = date('Y-m-d', time());
+
+                // $data['check_out'] = date(now());
+                $data['check_out'] = date('Y-m-d H:i:s', time());
+                $user = Report::where('id', $cekabsensebelum->id)->update($data);
+
+                $response = [
+                    'message' => 'success',
+                    'sukses' => 1,
+                    'data' => $data
+                ];
+
+                return response()->json($response, Response::HTTP_CREATED);
+            }
             //belum absen masuk
             $response = [
                 'message' => 'success',
