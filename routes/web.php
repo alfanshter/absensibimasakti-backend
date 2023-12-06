@@ -13,6 +13,7 @@ use App\Http\Controllers\WorkController;
 use App\Http\Controllers\TesController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DailyActivityController;
+use App\Http\Controllers\FrontSuratIjinController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\NotifikasiController;
 
@@ -132,3 +133,7 @@ Route::get('/daily', [DailyActivityController::class, 'index_admin']);
 Route::get('/daily/filter', [DailyActivityController::class, 'filter']);
 Route::post('/print_daily', [DailyActivityController::class, 'print_daily']);
 
+Route::get('/suratijin/create', [FrontSuratIjinController::class, 'create'])->name('suratijin.create');
+Route::post('/suratijin/store', [FrontSuratIjinController::class, 'store'])->name('suratijin.store');
+Route::get('/suratijin/excel/{id}', [FrontSuratIjinController::class, 'excel'])->name('suratijin.excel');
+Route::get('/suratijin/delete/{id}', [FrontSuratIjinController::class, 'delete']);

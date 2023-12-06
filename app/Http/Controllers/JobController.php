@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\JobSafetyAnalysis;
 use App\Models\AarJobSafety;
+use App\Models\Sib;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -19,12 +20,8 @@ class JobController extends Controller
     public function index()
     {
         if (Auth::check()) {
-            Cookie::forget('kode_aar');
-            $token_key = Str::random(30);
-            Cookie::queue(Cookie::forever('kode_aar', $token_key));
-            return view('job.index', [
-                'job' => JobSafetyAnalysis::all()
-            ]);
+            $sibs = Sib::all();
+            return view('job.index', compact('sibs'));
         }
         return redirect("login")->withSuccess('You are not allowed to access');
     }
@@ -155,11 +152,11 @@ class JobController extends Controller
     public function destroy($id)
     {
         if (Auth::check()) {
-            $internal = JobSafetyAnalysis::where('id', $id)->first();
-            $id_detail = explode(',', $internal->id_aar);
-            $aar = AarJobSafety::whereIn('id', $id_detail)->delete();
-            JobSafetyAnalysis::destroy($id);
-            return redirect('/job-safety-analysis')->with('success', 'Job Safety Analysis Deleted ');
+            $sib = Sib::findOrFail($id);
+            $sib->delete();
+            notify()->success('Successfully added');
+
+            return redirect()->route('suratijin');
         }
         return redirect("login")->withSuccess('You are not allowed to access');
     }
