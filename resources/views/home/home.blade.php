@@ -69,7 +69,8 @@
                 </p>
             </div>
             <div class="col-md-5 mt-5">
-              <img src="{{asset('assets/maintance.jpg')}}"  class="rounded" style="width: 100%;" alt="">
+              <img src="{{asset('assets/gambar.png')}}"  class="rounded" style="width: 100%;" alt="">
+              
 
             </div>
           </div>
